@@ -1,4 +1,4 @@
-#  Totem Autorecebimento - Sistema de Autoatendimento
+#  Totem Autorecebimento - Sistema de Autoatendimento (Em Desenvolvimento)
 
 Sistema completo de autoatendimento para motoristas com interface moderna e responsiva, desenvolvido em HTML, CSS e JavaScript puro.
 
