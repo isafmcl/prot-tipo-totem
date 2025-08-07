@@ -1,0 +1,44 @@
+{
+  "name": "totem-autorecebimento",
+  "version": "1.0.0",
+  "description": "Sistema de autoatendimento para motoristas com interface moderna e responsiva",
+  "main": "app.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "serve": "python -m http.server 8000",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "totem",
+    "autoatendimento",
+    "motoristas",
+    "pix",
+    "nfe",
+    "html",
+    "css",
+    "javascript",
+    "responsive",
+    "touch"
+  ],
+  "author": "Sistema de Autoatendimento",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seu-usuario/totem-autorecebimento.git"
+  },
+  "bugs": {
+    "url": "https://github.com/seu-usuario/totem-autorecebimento/issues"
+  },
+  "homepage": "https://github.com/seu-usuario/totem-autorecebimento#readme",
+  "devDependencies": {},
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+} 

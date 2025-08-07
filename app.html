@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Totem Autorecebimento - Motorista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0B3D91">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Totem">
+</head>
+<body>
+  <div class="container">
+    <div class="progresso">
+      <div class="progresso-barra" id="progressoBarra"></div>
+    </div>
+
+    <!-- Tela de Boas-Vindas -->
+    <div id="telaBoasVindas" class="tela ativa">
+      <div class="welcome-container">
+        <div class="welcome-header">
+          <div class="welcome-logo">
+            <div class="logo-icon">🚛</div>
+          </div>
+          <div class="welcome-text">
+            <h1 class="welcome-title">Bem-vindo ao Totem</h1>
+            <p class="welcome-subtitle">Autorecebimento - Sistema de Atendimento</p>
+          </div>
+        </div>
+        
+        <div class="welcome-action">
+          <button class="welcome-button" onclick="proximaTela('identificacao')">
+            Iniciar Atendimento
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tela de Identificação -->
+    <div id="telaIdentificacao" class="tela">
+      <button class="voltar" onclick="voltarTela()">←</button>
+      
+      <div class="header">
+        <div class="titulo">Identificação</div>
+        <div class="subtitulo">Informe seus dados pessoais</div>
+      </div>
+      
+      <div class="conteudo">
+        <div class="form-grupo">
+          <div class="input-grupo">
+            <label class="label">Nome</label>
+            <input type="text" class="input" id="nome" placeholder="Digite seu nome">
+          </div>
+          
+          <div class="input-grupo">
+            <label class="label">Sobrenome</label>
+            <input type="text" class="input" id="sobrenome" placeholder="Digite seu sobrenome">
+          </div>
+          
+          <div class="input-grupo">
+            <label class="label">CNPJ da Empresa</label>
+            <input type="text" class="input" id="cnpj" placeholder="00.000.000/0000-00">
+          </div>
+          
+          <div class="input-grupo">
+            <label class="label">Cargo</label>
+            <select class="select" id="cargo">
+              <option value="">Selecione seu cargo</option>
+              <option value="motorista">Motorista</option>
+              <option value="ajudante">Ajudante</option>
+              <option value="outro">Outro</option>
+            </select>
+          </div>
+        </div>
+        
+        <button class="botao" onclick="validarIdentificacao()">
+          Continuar
+        </button>
+      </div>
+    </div>
+
+    <!-- Tela de Notas Fiscais -->
+    <div id="telaNotasFiscais" class="tela">
+      <button class="voltar" onclick="voltarTela()">←</button>
+      
+      <div class="header">
+        <div class="titulo">Notas Fiscais</div>
+        <div class="subtitulo">Informe as notas fiscais para descarga</div>
+      </div>
+      
+      <div class="conteudo">
+        <div class="form-grupo">
+          <div class="input-grupo">
+            <label class="label">Chave de Acesso da NFe</label>
+            <input type="text" class="input" id="chaveNFe" placeholder="Digite a chave de acesso">
+          </div>
+          
+          <div class="input-grupo">
+            <label class="label">Valor da Nota (R$)</label>
+            <input type="number" class="input" id="valorNota" placeholder="0,00" step="0.01">
+          </div>
+          
+          <button class="botao-secundario" onclick="adicionarNota()">
+            + Adicionar Nota Fiscal
+          </button>
+        </div>
+        
+        <div id="listaNotas" class="resumo" style="display: none;">
+          <h4>Notas Adicionadas:</h4>
+          <div id="notasAdicionadas"></div>
+        </div>
+        
+        <button class="botao" onclick="validarNotas()">
+          Continuar
+        </button>
+      </div>
+    </div>
+
+    <!-- Tela de Resumo e Senha -->
+    <div id="telaResumo" class="tela">
+      <button class="voltar" onclick="voltarTela()">←</button>
+      
+      <div class="header">
+        <div class="titulo">Resumo do Atendimento</div>
+        <div class="subtitulo">Confirme as informações e receba sua senha</div>
+      </div>
+      
+      <div class="conteudo">
+        <div class="resumo">
+          <div class="resumo-item">
+            <span>Nome:</span>
+            <span id="resumoNome"></span>
+          </div>
+          <div class="resumo-item">
+            <span>Empresa:</span>
+            <span id="resumoEmpresa"></span>
+          </div>
+          <div class="resumo-item">
+            <span>Cargo:</span>
+            <span id="resumoCargo"></span>
+          </div>
+          <div class="resumo-item">
+            <span>Total de Notas:</span>
+            <span id="resumoNotas"></span>
+          </div>
+          <div class="resumo-item">
+            <span>Valor Total:</span>
+            <span id="resumoValor"></span>
+          </div>
+        </div>
+        
+        <div class="senha">
+          <div class="senha-numero" id="numeroSenha"></div>
+          <div class="senha-texto">Aguarde ser chamado no painel</div>
+        </div>
+        
+        <button class="botao-secundario" onclick="enviarWhatsApp()">
+          📱 Acompanhar via WhatsApp
+        </button>
+        
+        <button class="botao" onclick="proximaTela('pagamento')">
+          Ir para Pagamento
+        </button>
+      </div>
+    </div>
+
+    <!-- Tela de Pagamento -->
+    <div id="telaPagamento" class="tela">
+      <button class="voltar" onclick="voltarTela()">←</button>
+      
+      <div class="header">
+        <div class="titulo">Pagamento PIX</div>
+        <div class="subtitulo">Escaneie o QR Code para pagar</div>
+      </div>
+      
+      <div class="conteudo">
+        <div class="valor" id="valorPagamento"></div>
+        
+        <div class="qr-code">
+          <img id="qrCodeImg" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZmIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlFSIENvZGUgUGl4PC90ZXh0Pjwvc3ZnPg==" alt="QR Code PIX">
+          <p>Escaneie com seu app bancário</p>
+        </div>
+        
+        <button class="botao" onclick="confirmarPagamento()">
+          Confirmar Pagamento
+        </button>
+      </div>
+    </div>
+
+    <!-- Tela de Confirmação -->
+    <div id="telaConfirmacao" class="tela">
+      <div class="header">
+        <div class="logo">✅</div>
+        <div class="titulo">Pagamento Confirmado!</div>
+        <div class="subtitulo">Seu atendimento foi finalizado com sucesso</div>
+      </div>
+      
+      <div class="conteudo">
+        <div class="status">
+          Pagamento realizado com sucesso
+        </div>
+        
+        <div class="resumo">
+          <div class="resumo-item">
+            <span>Senha:</span>
+            <span id="senhaFinal"></span>
+          </div>
+          <div class="resumo-item">
+            <span>Valor Pago:</span>
+            <span id="valorFinal"></span>
+          </div>
+          <div class="resumo-item">
+            <span>Status:</span>
+            <span style="color: #2e7d32;">✅ Pago</span>
+          </div>
+        </div>
+        
+        <button class="botao" onclick="finalizarAtendimento()">
+          Finalizar Atendimento
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let telaAtual = 'boasVindas';
+    let dadosMotorista = {};
+    let notasFiscais = [];
+    let numeroSenha = 0;
+    
+    const telas = ['boasVindas', 'identificacao', 'notasFiscais', 'resumo', 'pagamento', 'confirmacao'];
+    
+    function atualizarProgresso() {
+      const indice = telas.indexOf(telaAtual);
+      const progresso = ((indice + 1) / telas.length) * 100;
+      document.getElementById('progressoBarra').style.width = progresso + '%';
+    }
+    
+
+    
+    function proximaTela(novaTela) {
+      document.getElementById('tela' + telaAtual.charAt(0).toUpperCase() + telaAtual.slice(1)).classList.remove('ativa');
+      document.getElementById('tela' + novaTela.charAt(0).toUpperCase() + novaTela.slice(1)).classList.add('ativa');
+      telaAtual = novaTela;
+      atualizarProgresso();
+      
+      // Gerar QR Code quando chegar na tela de pagamento
+      if (novaTela === 'pagamento') {
+        gerarQRCode();
+      }
+    }
+    
+    function gerarQRCode() {
+      const valorTotal = notasFiscais.reduce((total, nota) => total + nota.valor, 0);
+      document.getElementById('valorPagamento').textContent = 'R$ ' + valorTotal.toFixed(2);
+      
+      // Gerar QR Code usando API externa
+      const dadosPix = {
+        valor: valorTotal.toFixed(2),
+        senha: numeroSenha,
+        motorista: dadosMotorista.nome + ' ' + dadosMotorista.sobrenome
+      };
+      
+      const qrCodeData = JSON.stringify(dadosPix);
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrCodeData)}`;
+      
+      document.getElementById('qrCodeImg').src = qrCodeUrl;
+    }
+    
+    function voltarTela() {
+      const indice = telas.indexOf(telaAtual);
+      if (indice > 0) {
+        proximaTela(telas[indice - 1]);
+      }
+    }
+    
+    function validarIdentificacao() {
+      const nome = document.getElementById('nome').value.trim();
+      const sobrenome = document.getElementById('sobrenome').value.trim();
+      const cnpj = document.getElementById('cnpj').value.trim();
+      const cargo = document.getElementById('cargo').value;
+      
+      if (!nome || !sobrenome || !cnpj || !cargo) {
+        mostrarNotificacao('Por favor, preencha todos os campos obrigatórios.', 'erro');
+        return;
+      }
+      
+      // Validação básica de CNPJ
+      if (!validarCNPJ(cnpj)) {
+        mostrarNotificacao('CNPJ inválido. Verifique o formato.', 'erro');
+        return;
+      }
+      
+      dadosMotorista = { nome, sobrenome, cnpj, cargo };
+      proximaTela('notasFiscais');
+    }
+    
+    function validarCNPJ(cnpj) {
+      // Remove caracteres não numéricos
+      cnpj = cnpj.replace(/[^\d]/g, '');
+      
+      // Verifica se tem 14 dígitos
+      if (cnpj.length !== 14) return false;
+      
+      // Verifica se todos os dígitos são iguais
+      if (/^(\d)\1+$/.test(cnpj)) return false;
+      
+      return true;
+    }
+    
+    function mostrarNotificacao(mensagem, tipo = 'sucesso') {
+      const notificacao = document.createElement('div');
+      notificacao.className = `notificacao ${tipo}`;
+      notificacao.textContent = mensagem;
+      notificacao.style.background = tipo === 'erro' ? '#f44336' : '#4caf50';
+      
+      document.body.appendChild(notificacao);
+      
+      setTimeout(() => {
+        notificacao.remove();
+      }, 3000);
+    }
+    
+    function adicionarNota() {
+      const chave = document.getElementById('chaveNFe').value.trim();
+      const valor = parseFloat(document.getElementById('valorNota').value);
+      
+      if (!chave || !valor) {
+        alert('Por favor, preencha a chave e o valor da nota fiscal.');
+        return;
+      }
+      
+      notasFiscais.push({ chave, valor });
+      
+      document.getElementById('chaveNFe').value = '';
+      document.getElementById('valorNota').value = '';
+      
+      atualizarListaNotas();
+    }
+    
+    function atualizarListaNotas() {
+      const lista = document.getElementById('listaNotas');
+      const container = document.getElementById('notasAdicionadas');
+      
+      if (notasFiscais.length > 0) {
+        lista.style.display = 'block';
+        container.innerHTML = '';
+        
+        notasFiscais.forEach((nota, index) => {
+          const item = document.createElement('div');
+          item.className = 'resumo-item';
+          item.innerHTML = `
+            <span>Nota ${index + 1}:</span>
+            <span>R$ ${nota.valor.toFixed(2)}</span>
+          `;
+          container.appendChild(item);
+        });
+      } else {
+        lista.style.display = 'none';
+      }
+    }
+    
+    function validarNotas() {
+      if (notasFiscais.length === 0) {
+        alert('Por favor, adicione pelo menos uma nota fiscal.');
+        return;
+      }
+      
+      numeroSenha = Math.floor(Math.random() * 9000) + 1000;
+      
+      // Preencher resumo
+      document.getElementById('resumoNome').textContent = dadosMotorista.nome + ' ' + dadosMotorista.sobrenome;
+      document.getElementById('resumoEmpresa').textContent = dadosMotorista.cnpj;
+      document.getElementById('resumoCargo').textContent = dadosMotorista.cargo;
+      document.getElementById('resumoNotas').textContent = notasFiscais.length + ' nota(s)';
+      
+      const valorTotal = notasFiscais.reduce((total, nota) => total + nota.valor, 0);
+      document.getElementById('resumoValor').textContent = 'R$ ' + valorTotal.toFixed(2);
+      document.getElementById('numeroSenha').textContent = numeroSenha;
+      
+      proximaTela('resumo');
+    }
+    
+    function enviarWhatsApp() {
+      const mensagem = `Olá! Sua senha é ${numeroSenha}. Acompanhe seu atendimento no painel.`;
+      const url = `https://wa.me/5511999999999?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, '_blank');
+    }
+    
+    function confirmarPagamento() {
+      const valorTotal = notasFiscais.reduce((total, nota) => total + nota.valor, 0);
+      document.getElementById('valorFinal').textContent = 'R$ ' + valorTotal.toFixed(2);
+      document.getElementById('senhaFinal').textContent = numeroSenha;
+      
+      // Simular processamento de pagamento
+      const botao = event.target;
+      const textoOriginal = botao.textContent;
+      botao.textContent = 'Processando...';
+      botao.disabled = true;
+      
+      setTimeout(() => {
+        proximaTela('confirmacao');
+        botao.textContent = textoOriginal;
+        botao.disabled = false;
+      }, 2000);
+    }
+    
+    function finalizarAtendimento() {
+      // Simular envio para o sistema
+      setTimeout(() => {
+        alert('Atendimento finalizado! Obrigado por utilizar nosso sistema.');
+        // Resetar dados
+        dadosMotorista = {};
+        notasFiscais = [];
+        numeroSenha = 0;
+        
+        // Voltar para tela inicial
+        proximaTela('boasVindas');
+        
+        // Limpar formulários
+        document.getElementById('nome').value = '';
+        document.getElementById('sobrenome').value = '';
+        document.getElementById('cnpj').value = '';
+        document.getElementById('cargo').value = '';
+        document.getElementById('chaveNFe').value = '';
+        document.getElementById('valorNota').value = '';
+        document.getElementById('listaNotas').style.display = 'none';
+      }, 1000);
+    }
+    
+    // Inicializar
+    atualizarProgresso();
+  </script>
+</body>
+</html>

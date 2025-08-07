@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Totem Web - Atendimento</title>
+  <style>
+    :root {
+      --azul-escuro: #0b3d91;
+      --azul-claro: #e3f2fd;
+      --azul-hover: #bbdefb;
+      --branco: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      display: flex;
+      height: 100vh;
+      background-color: var(--branco);
+    }
+
+    .sidebar {
+      width: 260px;
+      background-color: var(--azul-claro);
+      padding: 30px 20px;
+      color: var(--azul-escuro);
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+
+    .sidebar h2 {
+      font-size: 22px;
+      margin-bottom: 25px;
+    }
+
+    .step {
+      background-color: var(--branco);
+      border-left: 6px solid var(--azul-escuro);
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      color: var(--azul-escuro);
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .step:hover {
+      background-color: var(--azul-hover);
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 40px;
+      background-color: #f9f9f9;
+    }
+
+    .main-content h1 {
+      color: var(--azul-escuro);
+      font-size: 26px;
+      margin-bottom: 25px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background-color: var(--branco);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      color: var(--azul-escuro);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #444;
+      font-size: 14px;
+    }
+
+    .btn {
+      background-color: var(--azul-escuro);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #093170;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <h2>Etapas do Fluxo</h2>
+    <div class="step">1. Selecionar Idioma</div>
+    <div class="step">2. Iniciar Atendimento</div>
+    <div class="step">3. Identificação do Motorista</div>
+    <div class="step">4. Informar Notas Fiscais</div>
+    <div class="step">5. Chamada para Descarga</div>
+    <div class="step">6. Gerar QR Code PIX</div>
+    <div class="step">7. Enviar via WhatsApp</div>
+    <div class="step">8. Confirmar Pagamento e Emitir Recibo</div>
+  </div>
+
+  <div class="main-content">
+    <h1>Painel de Atendimento</h1>
+
+    <div class="cards">
+      <div class="card">
+        <h3>Status do Totem</h3>
+        <p>Todos os sistemas estão operando normalmente.</p>
+      </div>
+      <div class="card">
+        <h3>Última Ação</h3>
+        <p>Motorista Ellick identificou 3 notas fiscais (NF 1023, 1024, 1025).</p>
+      </div>
+      <div class="card">
+        <h3>Valor para Pagamento</h3>
+        <p>R$ 58,00 - aguardando pagamento via PIX.</p>
+        <button class="btn">Gerar QR Code</button>
+      </div>
+      <div class="card">
+        <h3>Contato via WhatsApp</h3>
+        <p>Mensagem enviada para o número cadastrado às 13:42.</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
