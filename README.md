@@ -59,7 +59,7 @@ O **Totem Autorecebimento** é um sistema de autoatendimento desenvolvido para o
 6. Realize o pagamento via PIX
 7. Finalize o atendimento
 
-### 🖥️ WEB (Painel)
+### WEB (Painel)
 
 *Em desenvolvimento - será o painel de gestão e monitoramento*
 
