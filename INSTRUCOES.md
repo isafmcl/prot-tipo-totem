@@ -92,12 +92,6 @@ Para testar o sistema, use estes dados fictícios:
 **Problema**: Botões não respondem
 - **Solução**: Verifique se JavaScript está habilitado
 
-### 📞 Suporte
-
-Para dúvidas ou problemas:
-- 📧 Email: suporte@totem.com
-- 📱 WhatsApp: (11) 99999-9999
-
 ---
 
 **🎉 Sistema pronto para uso! Teste agora mesmo!** 
