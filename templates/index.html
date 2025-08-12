@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Totem Autorecebimento - Motorista</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/app.css">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#0B3D91">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Totem">
+</head>
+<body>
+  <div class="container">
+    <div class="progresso">
+      <div class="progresso-barra" id="progressoBarra"></div>
+    </div>
+
+    <!-- Tela de Boas-Vindas -->
+    <div id="telaBoasVindas" class="tela ativa">
+      <div class="welcome-container">
+        <div class="welcome-header">
+          <div class="welcome-logo">
+            <img src="../static/img/Logo_DiaaDia_DD_Prancheta 1 cópia 2-01.png" alt="Logo Dia a Dia Atacadista" style="width: 230px;">
+          </div>
+          <div class="welcome-text">
+            <h1 class="welcome-title">Bem-vindo ao Totem</h1>
+            <p class="welcome-subtitle">Autorecebimento - Sistema de Atendimento</p>
+          </div>
+        </div>
+        
+        <div class="welcome-action">
+          <button class="welcome-button" onclick="proximaTela('identificacao')">
+            Iniciar Atendimento
+          </button>
+          <button class="welcome-button welcome-button-secondary" onclick="proximaTela('pagamento')">
+            Realizar Pagamento
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tela de Identificação -->
+    <div id="telaIdentificacao" class="tela">
+      <button class="voltar" onclick="voltarTela()">←</button>
+      
+      <div class="welcome-logo" style="text-align: center; margin-bottom: 20px;">
+        <img src="../static/img/Logo_DiaaDia_DD_Prancheta 1 cópia 2-01.png" alt="Logo Dia a Dia Atacadista" style="width: 150px;">
+      </div>
+
+      <div class="header">
+        <div class="titulo">Identificação</div>
+        <div class="subtitulo">Informe seus dados pessoais</div>
+      </div>
+      
+      <div class="conteudo">
+        <div class="form-grupo">
+          <div class="input-grupo">
+            <label class="label">Nome</label>
+            <input type="text" class="input" id="nome" placeholder="Digite seu nome">
+          </div>
+          
+          <div class="input-grupo">
+            <label class="label">Sobrenome</label>
+            <input type="text" class="input" id="sobrenome" placeholder="Digite seu sobrenome">
+          </div>
+          
+          <div class="input-grupo">
+            <label class="label">CNPJ da Empresa</label>
+            <input type="text" class="input" id="cnpj" placeholder="00.000.000/0000-00">
+          </div>
+
+          <div class="input-grupo">
+            <label class="label">WhatsApp</label>
+            <input type="tel" inputmode="numeric" pattern="[0-9]*" class="input" id="whatsapp" placeholder="(11) 99999-9999">
+          </div>
+          
+          <div class="input-grupo">
+            <label class="label">Cargo</label>
+            <div class="checkbox-grupo">
+              <div class="checkbox-item">
+                <input type="checkbox" id="cargoMotorista" name="cargo" value="motorista">
+                <label for="cargoMotorista">Motorista</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="cargoAjudante" name="cargo" value="ajudante">
+                <label for="cargoAjudante">Ajudante</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="cargoOutro" name="cargo" value="outro">
+                <label for="cargoOutro">Outro</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <button class="botao" onclick="validarIdentificacao()">
+          Continuar
+        </button>
+      </div>
+    </div>
+
+    <!-- Tela de Notas Fiscais -->
+    <div id="telaNotasFiscais" class="tela">
+      <button class="voltar" onclick="voltarTela()">←</button>
+      
+      <div class="welcome-logo" style="text-align: center; margin-bottom: 20px;">
+        <img src="../static/img/Logo_DiaaDia_DD_Prancheta 1 cópia 2-01.png" alt="Logo Dia a Dia Atacadista" style="width: 150px;">
+      </div>
+
+      <div class="header">
+        <div class="titulo">Notas Fiscais</div>
+        <div class="subtitulo">Informe as notas fiscais para descarga</div>
+      </div>
+      
+      <div class="conteudo">
+        <div class="form-grupo">
+          <div class="input-grupo">
+            <label class="label">Chave de Acesso da NFe</label>
+            <input type="text" class="input" id="chaveNFe" placeholder="Digite a chave de acesso da nota fiscal" maxlength="44">
+          </div>
+        </div>
+        
+        <button class="botao" onclick="validarNotas()">
+          Continuar
+        </button>
+      </div>
+    </div>
+
+    <!-- Tela de Resumo e Senha -->
+    <div id="telaResumo" class="tela">
+      <button class="voltar" onclick="voltarTela()">←</button>
+      
+      <div class="welcome-logo" style="text-align: center; margin-bottom: 20px;">
+        <img src="../static/img/Logo_DiaaDia_DD_Prancheta 1 cópia 2-01.png" alt="Logo Dia a Dia Atacadista" style="width: 150px;">
+      </div>
+
+      <div class="header">
+        <div class="titulo">Resumo do Atendimento</div>
+        <div class="subtitulo">Confirme as informações e receba sua senha</div>
+      </div>
+      
+      <div class="conteudo">
+        <div class="resumo">
+          <div class="resumo-item">
+            <span>Nome:</span>
+            <span id="resumoNome"></span>
+          </div>
+          <div class="resumo-item">
+            <span>Empresa:</span>
+            <span id="resumoEmpresa"></span>
+          </div>
+          <div class="resumo-item">
+            <span>Cargo:</span>
+            <span id="resumoCargo"></span>
+          </div>
+          <div class="resumo-item">
+            <span>Chave da Nota:</span>
+            <span id="resumoNotas" style="word-break: break-all; font-size: 14px;"></span>
+          </div>
+        </div>
+        
+        <div class="senha">
+          <div class="senha-numero" id="numeroSenha"></div>
+          <div class="senha-texto">Aguarde ser chamado no painel</div>
+        </div>
+        
+        <div class="botoes-grupo" style="justify-content: center;">
+          <button class="botao-secundario" onclick="enviarWhatsApp()">
+            Acompanhar via WhatsApp
+          </button>
+          <button class="botao-secundario" onclick="enviarSMS()">
+            Acompanhar via SMS
+          </button>
+        </div>
+        
+        <button class="botao" onclick="proximaTela('pagamento')">
+          Ir para Pagamento
+        </button>
+      </div>
+    </div>
+
+    <!-- Tela de Pagamento -->
+    <div id="telaPagamento" class="tela">
+      <button class="voltar" onclick="voltarTela()">←</button>
+      
+      <div class="header">
+        <div class="titulo">Pagamento PIX</div>
+        <div class="subtitulo">Escaneie o QR Code para pagar</div>
+      </div>
+      
+      <div class="conteudo">
+        <div class="welcome-logo" style="text-align: center; margin-bottom: 20px;">
+          <img src="../static/img/Logo_DiaaDia_DD_Prancheta 1 cópia 2-01.png" alt="Logo Dia a Dia Atacadista" style="width: 150px;">
+        </div>
+
+        <div class="resumo">
+          <div class="resumo-item">
+            <span>Total de Notas:</span>
+            <span id="totalNotas"></span>
+          </div>
+          <div class="resumo-item">
+            <span>Valor Total da Descarga:</span>
+            <span id="valorPagamento"></span>
+          </div>
+        </div>
+
+        <div class="form-grupo" style="margin-top: 20px;">
+          <label class="label">Forma de Pagamento:</label>
+          <div class="radio-grupo">
+            <div class="radio-item">
+              <input type="radio" id="opcaoQRCode" name="formaPagamento" value="qrcode" checked onclick="escolherFormaPagamento('qrcode')">
+              <label for="opcaoQRCode">QR Code PIX</label>
+            </div>
+            <div class="radio-item">
+              <input type="radio" id="opcaoLink" name="formaPagamento" value="link" onclick="escolherFormaPagamento('link')">
+              <label for="opcaoLink">Link de Pagamento</label>
+            </div>
+          </div>
+        </div>
+        
+        <div id="qrCodeContainer" class="qr-code">
+          <img id="qrCodeImg" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZmIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlFSIENvZGUgUGl4PC90ZXh0Pjwvc3ZnPg==" alt="QR Code PIX">
+          <p>Escaneie com seu app bancário</p>
+        </div>
+
+        <div id="linkContainer" class="link-pagamento" style="display: none;">
+          <input type="text" class="input" id="linkPagamento" readonly value="https://pagamento.diaadia.com.br/pix/123456">
+          <button class="botao-secundario" onclick="copiarLink()" style="margin-top: 10px;">
+            Copiar Link
+          </button>
+        </div>
+        
+        <button class="botao" onclick="confirmarPagamento()">
+          Confirmar Pagamento
+        </button>
+      </div>
+    </div>
+
+    <!-- Tela de Confirmação -->
+    <div id="telaConfirmacao" class="tela">
+      <div class="welcome-logo" style="text-align: center; margin: 20px 0;">
+        <img src="../static/img/Logo_DiaaDia_DD_Prancheta 1 cópia 2-01.png" alt="Logo Dia a Dia Atacadista" style="width: 180px;">
+      </div>
+
+      <div class="header">
+        <div class="titulo">Pagamento Confirmado!</div>
+        <div class="subtitulo">Seu atendimento foi finalizado com sucesso</div>
+      </div>
+      
+      <div class="conteudo">
+        <div class="status" style="background: #e8f5e9; border: 1px solid #2e7d32; border-radius: 8px;">
+          Pagamento realizado com sucesso
+        </div>
+        
+        <div class="resumo">
+          <div class="resumo-item">
+            <span>Senha:</span>
+            <span id="senhaFinal"></span>
+          </div>
+          <div class="resumo-item">
+            <span>Valor Pago:</span>
+            <span id="valorFinal"></span>
+          </div>
+          <div class="resumo-item">
+            <span>Status:</span>
+            <span style="color: #2e7d32;">✅ Pago</span>
+          </div>
+        </div>
+
+        <div class="botoes-grupo" style="justify-content: center;">
+          <button class="botao-secundario" onclick="emitirRecibo()">
+            Emitir Recibo
+          </button>
+          <button class="botao-secundario" onclick="enviarReciboWhatsApp()">
+            Enviar no WhatsApp
+          </button>
+        </div>
+
+        <button class="botao" onclick="finalizarAtendimento()">
+          Finalizar Atendimento
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../src/app.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-/* Reset e configurações globais */
+
 * {
   margin: 0;
   padding: 0;
@@ -232,6 +232,33 @@ body {
   min-height: 56px;
 }
 
+.checkbox-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #0B3D91;
+}
+
+.checkbox-item label {
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  user-select: none;
+}
+
 /* Botões */
 .botao {
   background: linear-gradient(135deg, #0B3D91, #1976d2);
@@ -264,15 +291,74 @@ body {
   background: transparent;
   color: #0B3D91;
   border: 2px solid #0B3D91;
-  box-shadow: none;
+  box-shadow: 0 4px 12px rgba(11, 61, 145, 0.1);
+  min-width: 160px;
+  padding: 12px 24px;
+  font-size: 16px;
+  transition: all 0.3s ease;
 }
 
 .botao-secundario:hover {
   background: #0B3D91;
   color: white;
+  box-shadow: 0 6px 16px rgba(11, 61, 145, 0.2);
+  transform: translateY(-1px);
 }
 
+.botao-secundario:active {
+  transform: translateY(0);
+}
 
+.welcome-button-secondary {
+  background: linear-gradient(135deg, #0B3D91, #1976d2);
+  color: white;
+  border: none;
+  box-shadow: 0 6px 20px rgba(11, 61, 145, 0.3);
+  margin-top: 16px !important;
+}
+
+.welcome-button-secondary:hover {
+  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  box-shadow: 0 8px 25px rgba(11, 61, 145, 0.4);
+}
+
+.botoes-grupo {
+  display: flex;
+  gap: 16px;
+  margin: 24px 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.radio-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.radio-item input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #0B3D91;
+}
+
+.radio-item label {
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+.link-pagamento {
+  margin: 20px 0;
+  text-align: center;
+}
 
 /* Resumo */
 .resumo {
@@ -414,8 +500,6 @@ body {
   animation: fadeIn 0.3s ease;
 }
 
-
-
 /* Responsividade */
 @media (max-height: 600px) {
   .container {
@@ -545,4 +629,4 @@ body {
 @keyframes slideIn {
   from { transform: translateX(100%); opacity: 0; }
   to { transform: translateX(0); opacity: 1; }
-} 
+}
