@@ -63,17 +63,6 @@ O **Totem Autorecebimento** é um sistema de autoatendimento desenvolvido para o
 
 *Em desenvolvimento - será o painel de gestão e monitoramento*
 
-## 📁 Estrutura de Arquivos
-
-```
-totem-autorecebimento/
-├── app.html          # Interface do totem (motoristas)
-├── app.css           # Estilos do totem
-├── web.html          # Painel de gestão (em desenvolvimento)
-├── web.css           # Estilos do painel (em desenvolvimento)
-└── README.md         # Documentação do projeto
-```
-
 ## Funcionalidades Técnicas
 
 ### Validações Implementadas
