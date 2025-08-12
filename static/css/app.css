@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+
 
 body {
   font-family: 'Inter', sans-serif;
@@ -34,10 +34,12 @@ html, body {
   max-height: 100dvh;
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(11, 61, 145, 0.15);
-  overflow: auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
   position: relative;
+}
 }
 
 /* Barra de progresso */
@@ -576,7 +578,7 @@ html, body {
     height: 100dvh;
     max-height: 100dvh;
     box-shadow: none;
-    overflow-y: auto;
+    /* overflow-y já está aplicado globalmente */
   }
   .tela {
     padding: 20px 8px;
