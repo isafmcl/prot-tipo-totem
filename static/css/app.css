@@ -1,3 +1,10 @@
+/* Garantir que os botões de ação de boas-vindas fiquem em coluna */
+.welcome-action {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+}
 
 * {
   margin: 0;
@@ -565,6 +572,11 @@ html, body {
 }
 
 @media (max-width: 480px) {
+  .botoes-grupo {
+    flex-direction: column !important;
+    gap: 16px;
+    align-items: stretch;
+  }
   html, body {
     min-height: 100vh;
     height: 100dvh;
@@ -578,7 +590,8 @@ html, body {
     height: 100dvh;
     max-height: 100dvh;
     box-shadow: none;
-    /* overflow-y já está aplicado globalmente */
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
   }
   .tela {
     padding: 20px 8px;
