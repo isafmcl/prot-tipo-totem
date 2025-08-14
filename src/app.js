@@ -469,10 +469,8 @@ function emitirRecibo() {
 }
 
 function enviarReciboWhatsApp() {
-  const mensagem = `*Recibo de Pagamento*\n\nSenha: ${numeroSenha}\nData: ${new Date().toLocaleDateString()}\nStatus: Pago✅`;
-  const url = `https://wa.me/55119999999999?text=${encodeURIComponent(mensagem)}`;
-  window.open(url, '_blank');
-  mostrarNotificacao('Abrindo WhatsApp...', 'sucesso');
+  mostrarNotificacao('Recibo Enviado para o WhatsApp!', 'sucesso');
+  
 }
 
 function enviarSMS() {
