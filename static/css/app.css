@@ -1,3 +1,64 @@
+/* Popup de acompanhamento */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.popup-content {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  padding: 24px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+}
+
+.popup-content h2 {
+  color: #0B3D91;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.popup-dados {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.popup-dados > div {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.popup-telefone {
+  margin: 16px 0;
+}
+
+.popup-link {
+  margin: 16px 0;
+}
+
+.popup-botoes {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.popup-overlay.active {
+  display: flex;
+}
 /* Garantir que os botões de ação de boas-vindas fiquem em coluna */
 .welcome-action {
   display: flex;
@@ -146,7 +207,7 @@ html, body {
 }
 
 .welcome-subtitle {
-  font-size: 16px;
+  font-size: 20px;
   color: #666;
   font-weight: 400;
   line-height: 1.5;
@@ -207,6 +268,69 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+/* Estilo para lista de notas */
+#listaNotas {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+#notasAdicionadas {
+  margin: 10px 0 0 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+}
+
+#notasAdicionadas {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+}
+
+#notasAdicionadas li {
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+#notasAdicionadas li span {
+  flex: 1;
+  word-break: break-all;
+  white-space: normal;
+  overflow-wrap: break-word;
+  line-height: 1.4;
+}
+
+#notasAdicionadas li button {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border: 1px solid #0B3D91;
+  border-radius: 6px;
+  background: transparent;
+  color: #0B3D91;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+#notasAdicionadas li button:hover {
+  background: #0B3D91;
+  color: white;
+}
+
+#notasAdicionadas li:last-child {
+  border-bottom: none;
 }
 
 .input-grupo {
@@ -438,6 +562,203 @@ html, body {
   height: 200px;
   margin-bottom: 15px;
   border-radius: 8px;
+}
+
+/* Contador */
+.contador {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #0B3D91;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Popup de Validação de Pagamento */
+.popup-contador-container {
+  text-align: center;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.contador-validacao {
+  width: 100px;
+  height: 100px;
+  background: #0B3D91;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: bold;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(11, 61, 145, 0.2);
+}
+
+.popup-contador-container p {
+  color: #666;
+  font-size: 16px;
+  margin: 0;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #0B3D91;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 10px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Ajustes para o layout da tela de confirmação */
+#telaConfirmacao .conteudo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 24px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+#telaConfirmacao .status {
+  text-align: center;
+  padding: 16px;
+  margin: 0;
+  font-size: 14px;
+}
+
+#telaConfirmacao .resumo {
+  margin: 15px 0;
+  padding: 24px;
+}
+
+#telaConfirmacao .resumo-item {
+  padding: 12px 0;
+}
+
+#telaConfirmacao .botoes-grupo {
+  margin: 30px 0;
+  gap: 20px;
+}
+
+#telaConfirmacao .botao {
+  margin-top: auto;
+  padding: 16px;
+}
+
+/* Ajuste para o popup de validação */
+#popupValidacaoPagamento .popup-content {
+  max-width: 320px;
+  padding: 32px;
+  text-align: center;
+}
+
+#popupValidacaoPagamento .popup-botoes {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+#popupValidacaoPagamento .popup-botoes button {
+  min-width: 160px;
+}
+
+#popupValidacaoPagamento h2 {
+  color: #0B3D91;
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+/* Ajustes para a tela de confirmação final */
+#telaConfirmacao {
+  text-align: center;
+  background: #fff;
+}
+
+#telaConfirmacao .header {
+  margin: 0 0 30px 0;
+}
+
+#telaConfirmacao .titulo {
+  color: #0B3D91;
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+#telaConfirmacao .subtitulo {
+  color: #666;
+  font-size: 16px;
+}
+
+#telaConfirmacao .status {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: 1px solid #2e7d32;
+  display: inline-block;
+  margin: 20px 0;
+  font-weight: 500;
+}
+
+#telaConfirmacao .resumo {
+  max-width: 400px;
+  margin: 20px auto;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+#telaConfirmacao .resumo-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+#telaConfirmacao .resumo-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+#telaConfirmacao .botoes-grupo {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin: 0;
+  margin-top: 60px;
+}
+
+#telaConfirmacao .botoes-grupo button {
+  min-width: 160px;
+}
+
+#telaConfirmacao .botao {
+  width: 100%;
+  max-width: 320px;
+  margin: 40px auto 20px auto;
+  position: relative;
 }
 
 /* Valor */

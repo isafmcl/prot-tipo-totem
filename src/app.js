@@ -1,3 +1,23 @@
+window.abrirPopup = abrirPopup;
+// Torna funções acessíveis globalmente para o HTML
+window.proximaTela = proximaTela;
+window.voltarTela = voltarTela;
+window.validarIdentificacao = validarIdentificacao;
+window.adicionarNotaFiscal = adicionarNotaFiscal;
+window.validarNotas = validarNotas;
+window.escolherFormaPagamento = escolherFormaPagamento;
+window.copiarLink = copiarLink;
+window.confirmarPagamento = confirmarPagamento;
+window.emitirRecibo = emitirRecibo;
+window.enviarReciboWhatsApp = enviarReciboWhatsApp;
+window.enviarWhatsApp = enviarWhatsApp;
+window.enviarSMS = enviarSMS;
+window.copiarPopupLink = copiarPopupLink;
+window.enviarPopupMensagem = enviarPopupMensagem;
+window.fecharPopup = fecharPopup;
+// Torna funções acessíveis globalmente para o HTML
+window.proximaTela = proximaTela;
+window.voltarTela = voltarTela;
 // Variáveis globais
 let telaAtual = 'boasVindas';
 let dadosMotorista = {};
@@ -14,6 +34,16 @@ function atualizarProgresso() {
 }
 
 function proximaTela(novaTela) {
+  // Se estiver saindo da tela de resumo, limpa o contador
+  if (telaAtual === 'resumo') {
+    if (contadorInterval) {
+      clearInterval(contadorInterval);
+    }
+    const telaResumo = document.getElementById('telaResumo');
+    telaResumo.removeEventListener('click', reiniciarContador);
+    telaResumo.removeEventListener('touchstart', reiniciarContador);
+  }
+
   document.getElementById('tela' + telaAtual.charAt(0).toUpperCase() + telaAtual.slice(1)).classList.remove('ativa');
   document.getElementById('tela' + novaTela.charAt(0).toUpperCase() + novaTela.slice(1)).classList.add('ativa');
   telaAtual = novaTela;
@@ -50,7 +80,9 @@ function validarIdentificacao() {
     return;
   }
   
-  dadosMotorista = { nome, sobrenome, cnpj, cargo: cargos.join(', ') };
+  dadosMotorista = { nome, sobrenome, cnpj, whatsapp, cargo: cargos.join(', ') };
+  // Salva dados no sessionStorage
+  sessionStorage.setItem('dadosMotorista', JSON.stringify(dadosMotorista));
   proximaTela('notasFiscais');
 }
 
@@ -76,40 +108,208 @@ function mostrarNotificacao(mensagem, tipo = 'sucesso') {
 }
 
 // Funções de notas fiscais
-function validarNotas() {
-  const chave = document.getElementById('chaveNFe').value.trim();
-  
+function adicionarNotaFiscal() {
+  const chaveInput = document.getElementById('chaveNFe');
+  const chave = chaveInput.value.trim();
   if (!chave) {
-    alert('Por favor, digite a chave da nota fiscal.');
+    mostrarNotificacao('Digite a chave da nota fiscal.', 'erro');
     return;
   }
-
   if (chave.length !== 44) {
-    alert('A chave da nota fiscal deve ter 44 dígitos.');
+    mostrarNotificacao('A chave da nota fiscal deve ter 44 dígitos.', 'erro');
     return;
   }
-
-  notasFiscais = [{ chave }];
-  
-  numeroSenha = Math.floor(Math.random() * 9000) + 1000;
-  
-  document.getElementById('resumoNome').textContent = dadosMotorista.nome + ' ' + dadosMotorista.sobrenome;
-  document.getElementById('resumoEmpresa').textContent = dadosMotorista.cnpj;
-  document.getElementById('resumoCargo').textContent = dadosMotorista.cargo;
-  document.getElementById('resumoNotas').textContent = notasFiscais[0].chave;
-  document.getElementById('numeroSenha').textContent = numeroSenha;
-  
-  proximaTela('resumo');
+  if (notasFiscais.some(n => n.chave === chave)) {
+    mostrarNotificacao('Esta nota já foi adicionada.', 'erro');
+    return;
+  }
+  notasFiscais.push({ chave });
+  chaveInput.value = '';
+  atualizarListaNotas();
 }
+
+function atualizarListaNotas() {
+  const listaDiv = document.getElementById('listaNotas');
+  const ul = document.getElementById('notasAdicionadas');
+  ul.innerHTML = '';
+  if (notasFiscais.length > 0) {
+    listaDiv.style.display = 'block';
+    notasFiscais.forEach((nota, idx) => {
+      const li = document.createElement('li');
+      const span = document.createElement('span');
+      span.textContent = nota.chave;
+      li.appendChild(span);
+      
+      const btn = document.createElement('button');
+      btn.textContent = 'Remover';
+      btn.onclick = () => {
+        notasFiscais.splice(idx, 1);
+        atualizarListaNotas();
+      };
+      li.appendChild(btn);
+      ul.appendChild(li);
+    });
+  } else {
+    listaDiv.style.display = 'none';
+  }
+}
+
+// Variáveis para o contador
+let tempoRestante = 15;
+let contadorInterval;
+
+function iniciarContador() {
+  // Limpa qualquer contador existente
+  if (contadorInterval) {
+    clearInterval(contadorInterval);
+  }
+  
+  // Reseta o tempo
+  tempoRestante = 15;
+  document.getElementById('contador').textContent = tempoRestante;
+  
+  // Inicia o novo contador
+  contadorInterval = setInterval(() => {
+    tempoRestante--;
+    document.getElementById('contador').textContent = tempoRestante;
+    
+    if (tempoRestante <= 0) {
+      clearInterval(contadorInterval);
+      proximaTela('boasVindas');
+    }
+  }, 1000);
+}
+
+function reiniciarContador() {
+  iniciarContador();
+}
+
+function validarNotas() {
+  if (notasFiscais.length === 0) {
+    mostrarNotificacao('Adicione pelo menos uma nota fiscal.', 'erro');
+    return;
+  }
+  numeroSenha = Math.floor(Math.random() * 9000) + 1000;
+  // Recupera dados do motorista do sessionStorage
+  const dados = JSON.parse(sessionStorage.getItem('dadosMotorista') || '{}');
+  dadosMotorista = dados;
+  document.getElementById('resumoNome').textContent = (dadosMotorista.nome || '') + ' ' + (dadosMotorista.sobrenome || '');
+  document.getElementById('resumoEmpresa').textContent = dadosMotorista.cnpj || '';
+  document.getElementById('resumoCargo').textContent = dadosMotorista.cargo || '';
+  document.getElementById('resumoNotas').textContent = notasFiscais.length;
+  document.getElementById('numeroSenha').textContent = numeroSenha;
+  proximaTela('resumo');
+  
+  // Inicia o contador quando a tela de resumo é carregada
+  iniciarContador();
+  
+  // Adiciona eventos para reiniciar o contador
+  const telaResumo = document.getElementById('telaResumo');
+  telaResumo.addEventListener('click', reiniciarContador);
+  telaResumo.addEventListener('touchstart', reiniciarContador);
+}
+
+// Função para abrir o popup de acompanhamento
+function abrirPopup(tipo) {
+  console.log('Abrindo popup:', tipo); // Debug
+
+  // Recupera dados do motorista e atendimento
+  const dados = JSON.parse(sessionStorage.getItem('dadosMotorista') || '{}');
+  const nome = (dados.nome || '') + ' ' + (dados.sobrenome || '');
+  const empresa = dados.cnpj || '';
+  const telefone = dados.whatsapp || '';
+  const senha = numeroSenha || '';
+  const totalNotas = notasFiscais.length;
+  
+  // Valor da descarga (simulado)
+  let valorDescarga = 0;
+  if (notasFiscais.length > 0 && notasFiscais[0].valor) {
+    valorDescarga = notasFiscais.reduce((total, nota) => total + (nota.valor || 0), 0);
+  }
+  // Se não houver valor, simula
+  if (!valorDescarga) valorDescarga = 50 * totalNotas;
+  
+  // Link de acompanhamento (simulado)
+  const linkAcompanhamento = 'https://painel.diaadia.com.br/atendimento/' + senha;
+
+  console.log('Dados do popup:', { nome, empresa, senha, totalNotas, valorDescarga }); // Debug
+
+  // Preenche popup
+  document.getElementById('popupTitulo').textContent = tipo === 'whatsapp' ? 'Acompanhar via WhatsApp' : 'Acompanhar via SMS';
+  document.getElementById('popupNome').textContent = nome;
+  document.getElementById('popupEmpresa').textContent = empresa;
+  document.getElementById('popupSenha').textContent = senha;
+  document.getElementById('popupTotalNotas').textContent = totalNotas;
+  document.getElementById('popupValorDescarga').textContent = 'R$ ' + valorDescarga.toFixed(2);
+  document.getElementById('popupTelefone').value = telefone;
+  document.getElementById('popupLink').value = linkAcompanhamento;
+
+  const popup = document.getElementById('popupAcompanhamento');
+  popup.classList.add('active');
+  popup.style.display = 'flex';
+  popup.setAttribute('data-tipo', tipo);
+  
+  console.log('Popup aberto:', popup.style.display); // Debug
+}
+
+// Fecha o popup
+function fecharPopup() {
+  console.log('Fechando popup'); // Debug
+  const popup = document.getElementById('popupAcompanhamento');
+  popup.classList.remove('active');
+  popup.style.display = 'none';
+  console.log('Popup fechado:', popup.style.display); // Debug
+}
+
+// Copia o link do popup
+function copiarPopupLink() {
+  const linkInput = document.getElementById('popupLink');
+  linkInput.select();
+  document.execCommand('copy');
+  mostrarNotificacao('Link copiado!', 'sucesso');
+}
+
+// Envia mensagem via WhatsApp ou SMS
+function enviarPopupMensagem() {
+  // Recupera dados do popup
+  const nome = document.getElementById('popupNome').textContent;
+  const empresa = document.getElementById('popupEmpresa').textContent;
+  const senha = document.getElementById('popupSenha').textContent;
+  const totalNotas = document.getElementById('popupTotalNotas').textContent;
+  const valorDescarga = document.getElementById('popupValorDescarga').textContent;
+  const telefone = document.getElementById('popupTelefone').value.replace(/\D/g, '');
+  const link = document.getElementById('popupLink').value;
+  const tipo = document.getElementById('popupAcompanhamento').getAttribute('data-tipo');
+
+  // Monta mensagem personalizada
+  const mensagem = `Olá, ${nome}!%0AEmpresa: ${empresa}%0ASenha (valor de descarga): ${senha}%0ATotal de notas: ${totalNotas}%0AValor da descarga: ${valorDescarga}%0AAcompanhe por aqui: ${link}`;
+
+  if (tipo === 'whatsapp') {
+    // Abre WhatsApp Web/App com mensagem pronta
+    window.open(`https://wa.me/55${telefone}?text=${mensagem}`, '_blank');
+  } else {
+    // Abre app de SMS (sintaxe para mobile)
+    window.open(`sms:+55${telefone}?body=${mensagem.replace(/%0A/g, '\n')}`);
+  }
+  fecharPopup();
+}
+
 
 // Funções de pagamento
 function gerarQRCode() {
-  const valorTotal = notasFiscais.reduce((total, nota) => total + nota.valor, 0);
-  document.getElementById('valorPagamento').textContent = 'R$ ' + valorTotal.toFixed(2);
+  // Calcula valor total (R$ 50 por nota)
+  const valorTotal = notasFiscais.length * 50;
   
+        // Preenche as informações na tela
+  document.getElementById('senhaValorDescarga').textContent = numeroSenha;
+  document.getElementById('empresaPagamento').textContent = dadosMotorista.cnpj;
+  document.getElementById('totalNotas').textContent = notasFiscais.length;
+  document.getElementById('valorPagamento').textContent = 'R$ ' + valorTotal.toFixed(2);  // Prepara os dados para o QR Code
   const dadosPix = {
-    valor: valorTotal.toFixed(2),
     senha: numeroSenha,
+    empresa: dadosMotorista.cnpj,
+    totalNotas: notasFiscais.length,
+    valorDescarga: 'R$ ' + valorTotal.toFixed(2),
     motorista: dadosMotorista.nome + ' ' + dadosMotorista.sobrenome
   };
   
@@ -125,9 +325,66 @@ function enviarWhatsApp() {
   window.open(url, '_blank');
 }
 
+// Variáveis para o contador de validação
+let tempoValidacao = 15;
+let contadorValidacaoInterval;
+
+function iniciarContadorValidacao() {
+  // Limpa qualquer contador existente
+  if (contadorValidacaoInterval) {
+    clearInterval(contadorValidacaoInterval);
+  }
+  
+  // Reseta o tempo
+  tempoValidacao = 15;
+  document.getElementById('contadorValidacao').textContent = tempoValidacao;
+  
+  // Mostra o popup de validação
+  const popup = document.getElementById('popupValidacaoPagamento');
+  popup.style.display = 'flex';
+  
+  // Inicia o novo contador
+  contadorValidacaoInterval = setInterval(() => {
+    tempoValidacao--;
+    document.getElementById('contadorValidacao').textContent = tempoValidacao;
+    
+    if (tempoValidacao <= 0) {
+      clearInterval(contadorValidacaoInterval);
+      // Se o tempo acabar, confirma automaticamente
+      confirmarValidacaoPagamento();
+    }
+  }, 1000);
+}
+
+function confirmarValidacaoPagamento() {
+  // Limpa o contador
+  if (contadorValidacaoInterval) {
+    clearInterval(contadorValidacaoInterval);
+  }
+  
+  // Esconde o popup
+  document.getElementById('popupValidacaoPagamento').style.display = 'none';
+  
+  // Mostra o conteúdo da tela de confirmação
+  document.querySelector('#telaConfirmacao .conteudo').style.display = 'block';
+}
+
+function cancelarValidacaoPagamento() {
+  // Limpa o contador
+  if (contadorValidacaoInterval) {
+    clearInterval(contadorValidacaoInterval);
+  }
+  
+  // Volta para a tela de pagamento
+  proximaTela('pagamento');
+  
+  // Mostra notificação
+  mostrarNotificacao('Pagamento não validado. Tente novamente.', 'erro');
+}
+
 function confirmarPagamento() {
-  const valorTotal = notasFiscais.reduce((total, nota) => total + nota.valor, 0);
-  document.getElementById('valorFinal').textContent = 'R$ ' + valorTotal.toFixed(2);
+  const valorTotal = notasFiscais.length * 50;
+  document.getElementById('valorFinal').textContent = 'R$ 50,00';
   document.getElementById('senhaFinal').textContent = numeroSenha;
   
   const botao = event.target;
@@ -137,6 +394,10 @@ function confirmarPagamento() {
   
   setTimeout(() => {
     proximaTela('confirmacao');
+    // Esconde o conteúdo da tela de confirmação até a validação
+    document.querySelector('#telaConfirmacao .conteudo').style.display = 'none';
+    // Inicia o processo de validação
+    iniciarContadorValidacao();
     botao.textContent = textoOriginal;
     botao.disabled = false;
   }, 2000);
@@ -185,7 +446,7 @@ function copiarLink() {
   const linkInput = document.getElementById('linkPagamento');
   linkInput.select();
   document.execCommand('copy');
-  mostrarNotificacao('Link copiado para a área de transferência!');
+  mostrarNotificacao('Enviado para o WhatsApp!');
 }
 
 function emitirRecibo() {
@@ -222,7 +483,7 @@ function copiarLink() {
   const linkInput = document.getElementById('linkPagamento');
   linkInput.select();
   document.execCommand('copy');
-  mostrarNotificacao('Link copiado para a área de transferência!', 'sucesso');
+  mostrarNotificacao('Enviado para o WhatsApp!', 'sucesso');
 }
 
 // Inicialização
@@ -240,4 +501,26 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // Inicializar lista de notas fiscais se existir a tela
+  atualizarListaNotas();
+
+    // Formatar campo de CNPJ
+    const cnpjInput = document.getElementById('cnpj');
+    if (cnpjInput) {
+      cnpjInput.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 14) value = value.slice(0, 14);
+        if (value.length > 12) {
+          value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+        } else if (value.length > 8) {
+          value = value.replace(/^(\d{2})(\d{3})(\d{3})(\d{0,4})$/, '$1.$2.$3/$4');
+        } else if (value.length > 5) {
+          value = value.replace(/^(\d{2})(\d{3})(\d{0,3})$/, '$1.$2.$3');
+        } else if (value.length > 2) {
+          value = value.replace(/^(\d{2})(\d{0,3})$/, '$1.$2');
+        }
+        e.target.value = value;
+      });
+    }
 });

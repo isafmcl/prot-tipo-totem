@@ -26,7 +26,7 @@
             <img src="../static/img/Logo_DiaaDia_DD_Prancheta 1 cópia 2-01.png" alt="Logo Dia a Dia Atacadista" style="width: 230px;">
           </div>
           <div class="welcome-text">
-            <h1 class="welcome-title">Bem-vindo ao Totem</h1>
+            <h1 class="welcome-title">Bem-vindo</h1>
             <p class="welcome-subtitle">Autorecebimento - Sistema de Atendimento</p>
           </div>
         </div>
@@ -81,7 +81,7 @@
             <label class="label">Cargo</label>
             <div class="checkbox-grupo">
               <div class="checkbox-item">
-                <input type="checkbox" id="cargoMotorista" name="cargo" value="motorista">
+                <input type="checkbox" id="cargoMotorista" name="cargo" value="Motorista">
                 <label for="cargoMotorista">Motorista</label>
               </div>
               <div class="checkbox-item">
@@ -121,9 +121,13 @@
             <label class="label">Chave de Acesso da NFe</label>
             <input type="text" class="input" id="chaveNFe" placeholder="Digite a chave de acesso da nota fiscal" maxlength="44">
           </div>
+          <button class="botao-secundario" type="button" onclick="adicionarNotaFiscal()" style="margin-top: 10px;">Adicionar Nota Fiscal</button>
         </div>
-        
-        <button class="botao" onclick="validarNotas()">
+        <div id="listaNotas" style="margin: 15px 0; display: none;">
+          <label class="label">Notas Fiscais Adicionadas:</label>
+          <ul id="notasAdicionadas"></ul>
+        </div>
+        <button class="botao" onclick="validarNotas()" style="margin-top: 10px;">
           Continuar
         </button>
       </div>
@@ -143,6 +147,7 @@
       </div>
       
       <div class="conteudo">
+        <div id="contador" class="contador">15</div>
         <div class="resumo">
           <div class="resumo-item">
             <span>Nome:</span>
@@ -157,8 +162,8 @@
             <span id="resumoCargo"></span>
           </div>
           <div class="resumo-item">
-            <span>Chave da Nota:</span>
-            <span id="resumoNotas" style="word-break: break-all; font-size: 14px;"></span>
+            <span>Total de Notas:</span>
+            <span id="resumoNotas" style="font-size: 14px;"></span>
           </div>
         </div>
         
@@ -167,15 +172,42 @@
           <div class="senha-texto">Aguarde ser chamado no painel</div>
         </div>
         
-        <div class="botoes-grupo" style="justify-content: center;">
-          <button class="botao-secundario" onclick="enviarWhatsApp()">
+        <div class="botoes-grupo" style="justify-content: center; margin-top: 2rem;">
+          <button class="botao-secundario" onclick="abrirPopup('whatsapp')">
             Acompanhar via WhatsApp
           </button>
-          <button class="botao-secundario" onclick="enviarSMS()">
+          <button class="botao-secundario" onclick="abrirPopup('sms')">
             Acompanhar via SMS
           </button>
         </div>
         
+        <!-- Popup de acompanhamento -->
+        <div id="popupAcompanhamento" class="popup-overlay" style="display:none;">
+          <div class="popup-content">
+            <h2 id="popupTitulo">Acompanhar Atendimento</h2>
+            <div class="popup-dados">
+              <div><strong>Nome:</strong> <span id="popupNome"></span></div>
+              <div><strong>Empresa:</strong> <span id="popupEmpresa"></span></div>
+              <div><strong>Senha:</strong> <span id="popupSenha"></span></div>
+              <div><strong>Total de Notas:</strong> <span id="popupTotalNotas"></span></div>
+              <div><strong>Valor da Descarga:</strong> <span id="popupValorDescarga"></span></div>
+            </div>
+            <div class="popup-telefone">
+              <label for="popupTelefone"><strong>Telefone:</strong></label>
+              <input type="tel" id="popupTelefone" class="input" style="width: 180px;" />
+            </div>
+            <div class="popup-link">
+              <label for="popupLink"><strong>Link de acompanhamento:</strong></label>
+              <input type="text" id="popupLink" class="input" readonly style="width: 80%;" />
+              
+            </div>
+            <div class="popup-botoes">
+              <button class="botao" type="button" onclick="enviarPopupMensagem()">Enviar agora</button>
+              <button class="botao-secundario" type="button" onclick="fecharPopup()">Cancelar</button>
+            </div>
+          </div>
+        </div>
+
         <button class="botao" onclick="proximaTela('pagamento')">
           Ir para Pagamento
         </button>
@@ -197,6 +229,14 @@
         </div>
 
         <div class="resumo">
+          <div class="resumo-item">
+            <span>Senha</span>
+            <span id="senhaValorDescarga"></span>
+          </div>
+          <div class="resumo-item">
+            <span>Empresa:</span>
+            <span id="empresaPagamento"></span>
+          </div>
           <div class="resumo-item">
             <span>Total de Notas:</span>
             <span id="totalNotas"></span>
@@ -229,7 +269,7 @@
         <div id="linkContainer" class="link-pagamento" style="display: none;">
           <input type="text" class="input" id="linkPagamento" readonly value="https://pagamento.diaadia.com.br/pix/123456">
           <button class="botao-secundario" onclick="copiarLink()" style="margin-top: 10px;">
-            Copiar Link
+            Enviar para o WhatsApp
           </button>
         </div>
         
@@ -241,6 +281,21 @@
 
     <!-- Tela de Confirmação -->
     <div id="telaConfirmacao" class="tela">
+      <!-- Popup de validação de pagamento -->
+      <div id="popupValidacaoPagamento" class="popup-overlay" style="display:flex;">
+        <div class="popup-content">
+          <h2>Validando Pagamento</h2>
+          <div class="popup-contador-container">
+            <div id="contadorValidacao" class="contador-validacao">15</div>
+            <p>Aguarde enquanto validamos seu pagamento...</p>
+            <div class="loading-spinner"></div>
+          </div>
+          <div class="popup-botoes">
+            <button class="botao-secundario" type="button" onclick="cancelarValidacaoPagamento()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+
       <div class="welcome-logo" style="text-align: center; margin: 20px 0;">
         <img src="../static/img/Logo_DiaaDia_DD_Prancheta 1 cópia 2-01.png" alt="Logo Dia a Dia Atacadista" style="width: 180px;">
       </div>
@@ -270,7 +325,7 @@
           </div>
         </div>
 
-        <div class="botoes-grupo" style="justify-content: center;">
+        <div class="botoes-grupo" style="justify-content: center; margin-top: 2rem;">
           <button class="botao-secundario" onclick="emitirRecibo()">
             Emitir Recibo
           </button>
@@ -279,7 +334,7 @@
           </button>
         </div>
 
-        <button class="botao" onclick="finalizarAtendimento()">
+        <button class="botao" onclick="finalizarAtendimento()" style="margin-top: 1.5rem;">
           Finalizar Atendimento
         </button>
       </div>
