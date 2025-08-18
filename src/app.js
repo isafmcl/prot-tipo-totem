@@ -123,7 +123,9 @@ function adicionarNotaFiscal() {
     mostrarNotificacao('Esta nota já foi adicionada.', 'erro');
     return;
   }
-  notasFiscais.push({ chave });
+  const serie = chave.substring(22, 25); // Posição 23 a 25
+  const numero = chave.substring(25, 34); // Posição 26 a 34
+  notasFiscais.push({ chave, serie, numero });
   chaveInput.value = '';
   atualizarListaNotas();
 }
@@ -136,9 +138,17 @@ function atualizarListaNotas() {
     listaDiv.style.display = 'block';
     notasFiscais.forEach((nota, idx) => {
       const li = document.createElement('li');
-      const span = document.createElement('span');
-      span.textContent = nota.chave;
-      li.appendChild(span);
+      const spanChave = document.createElement('span');
+      spanChave.textContent = nota.chave;
+      li.appendChild(spanChave);
+      
+      const spanSerie = document.createElement('span');
+      spanSerie.textContent = `Série: ${nota.serie}`;
+      li.appendChild(spanSerie);
+      
+      const spanNumero = document.createElement('span');
+      spanNumero.textContent = `Número: ${nota.numero}`;
+      li.appendChild(spanNumero);
       
       const btn = document.createElement('button');
       btn.textContent = 'Remover';
