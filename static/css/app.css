@@ -376,9 +376,16 @@ html, body {
 
 .checkbox-grupo {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: row; /* Exibir na horizontal */
+  gap: 20px; /* Espaçamento entre os checkboxes */
   margin-top: 5px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
 }
 
 .checkbox-item {

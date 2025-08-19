@@ -51,6 +51,14 @@ function proximaTela(novaTela) {
   
   if (novaTela === 'pagamento') {
     gerarQRCode();
+
+
+
+
+
+
+
+    
   }
 }
 
@@ -125,6 +133,9 @@ function adicionarNotaFiscal() {
   }
   const serie = chave.substring(22, 25); // Posição 23 a 25
   const numero = chave.substring(25, 34); // Posição 26 a 34
+  
+  // Aceita qualquer CNPJ com 44 dígitos - removida validação de correspondência
+  // Agora aceita qualquer nota fiscal com chave válida de 44 dígitos
   notasFiscais.push({ chave, serie, numero });
   chaveInput.value = '';
   atualizarListaNotas();
@@ -204,7 +215,7 @@ function validarNotas() {
   const dados = JSON.parse(sessionStorage.getItem('dadosMotorista') || '{}');
   dadosMotorista = dados;
   document.getElementById('resumoNome').textContent = (dadosMotorista.nome || '') + ' ' + (dadosMotorista.sobrenome || '');
-  document.getElementById('resumoEmpresa').textContent = dadosMotorista.cnpj || '';
+  document.getElementById('resumoEmpresa').textContent = 'Dia a Dia Atacadista S/A';
   document.getElementById('resumoCargo').textContent = dadosMotorista.cargo || '';
   document.getElementById('resumoNotas').textContent = notasFiscais.length;
   document.getElementById('numeroSenha').textContent = numeroSenha;
@@ -312,7 +323,7 @@ function gerarQRCode() {
   
         // Preenche as informações na tela
   document.getElementById('senhaValorDescarga').textContent = numeroSenha;
-  document.getElementById('empresaPagamento').textContent = dadosMotorista.cnpj;
+  document.getElementById('empresaPagamento').textContent = 'Dia a Dia Atacadista S/A';
   document.getElementById('totalNotas').textContent = notasFiscais.length;
   document.getElementById('valorPagamento').textContent = 'R$ ' + valorTotal.toFixed(2);  // Prepara os dados para o QR Code
   const dadosPix = {
