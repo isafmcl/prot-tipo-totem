@@ -1,4 +1,4 @@
-/* Popup de acompanhamento */
+
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -59,7 +59,7 @@
 .popup-overlay.active {
   display: flex;
 }
-/* Garantir que os botões de ação de boas-vindas fiquem em coluna */
+
 .welcome-action {
   display: flex;
   flex-direction: column;
@@ -142,7 +142,7 @@ html, body {
   display: flex;
 }
 
-/* Header */
+
 .header {
   text-align: center;
   margin-bottom: 30px;
@@ -162,7 +162,7 @@ html, body {
   box-shadow: 0 8px 20px rgba(11, 61, 145, 0.3);
 }
 
-/* Tela de Boas-Vindas Simplificada */
+
 .welcome-container {
   display: flex;
   flex-direction: column;
@@ -571,7 +571,7 @@ html, body {
   border-radius: 8px;
 }
 
-/* Contador */
+
 .contador {
   position: fixed;
   top: 20px;
@@ -589,7 +589,7 @@ html, body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Popup de Validação de Pagamento */
+
 .popup-contador-container {
   text-align: center;
   margin: 20px 0;
@@ -635,7 +635,7 @@ html, body {
   100% { transform: rotate(360deg); }
 }
 
-/* Ajustes para o layout da tela de confirmação */
+
 #telaConfirmacao .conteudo {
   flex: 1;
   display: flex;
@@ -716,7 +716,7 @@ html, body {
   padding: 16px;
 }
 
-/* Ajuste para o popup de validação */
+
 #popupValidacaoPagamento .popup-content {
   max-width: 320px;
   padding: 32px;
@@ -739,7 +739,7 @@ html, body {
   margin-bottom: 24px;
 }
 
-/* Ajustes para a tela de confirmação final */
+
 #telaConfirmacao {
   text-align: center;
   background: #fff;
@@ -972,7 +972,7 @@ html, body {
     width: 120px;
     height: 120px;
   }
-  /* Responsividade mobile para tela de boas-vindas */
+ 
   .welcome-container {
     padding: 20px 8px;
   }
@@ -998,7 +998,7 @@ html, body {
   }
 }
 
-/* Foco visível para navegação por teclado */
+
 .botao:focus,
 .input:focus,
 .select:focus {
@@ -1006,14 +1006,14 @@ html, body {
   outline-offset: 2px;
 }
 
-/* Estados de carregamento */
+
 .botao:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
 }
 
-/* Notificações */
+
 .notificacao {
   position: fixed;
   top: 20px;
