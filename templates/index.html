@@ -120,13 +120,20 @@
           <div class="input-grupo">
             <label class="label">Chave de Acesso da NFe</label>
             <input type="text" class="input" id="chaveNFe" placeholder="Digite a chave de acesso da nota fiscal" maxlength="44">
+            <small style="color: #666; font-size: 12px; margin-top: 5px; display: block;">
+              A chave deve ter 44 dígitos e o CNPJ deve corresponder ao cadastrado
+            </small>
           </div>
           <button class="botao-secundario" type="button" onclick="adicionarNotaFiscal()" style="margin-top: 10px;">Adicionar Nota Fiscal</button>
         </div>
+        
         <div id="listaNotas" style="margin: 15px 0; display: none;">
           <label class="label">Notas Fiscais Adicionadas:</label>
-          <ul id="notasAdicionadas"></ul>
+          <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-top: 10px;">
+            <ul id="notasAdicionadas" style="list-style: none; padding: 0; margin: 0;"></ul>
+          </div>
         </div>
+        
         <button class="botao" onclick="validarNotas()" style="margin-top: 10px;">
           Continuar
         </button>
