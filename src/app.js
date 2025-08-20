@@ -1,5 +1,4 @@
 window.abrirPopup = abrirPopup;
-// Torna funções acessíveis globalmente para o HTML
 window.proximaTela = proximaTela;
 window.voltarTela = voltarTela;
 window.validarIdentificacao = validarIdentificacao;
@@ -15,10 +14,8 @@ window.enviarSMS = enviarSMS;
 window.copiarPopupLink = copiarPopupLink;
 window.enviarPopupMensagem = enviarPopupMensagem;
 window.fecharPopup = fecharPopup;
-// Torna funções acessíveis globalmente para o HTML
 window.proximaTela = proximaTela;
 window.voltarTela = voltarTela;
-// Variáveis globais
 let telaAtual = 'boasVindas';
 let dadosMotorista = {};
 let notasFiscais = [];
@@ -34,7 +31,6 @@ function atualizarProgresso() {
 }
 
 function proximaTela(novaTela) {
-  // Se estiver saindo da tela de resumo, limpa o contador
   if (telaAtual === 'resumo') {
     if (contadorInterval) {
       clearInterval(contadorInterval);
@@ -101,7 +97,7 @@ function validarCNPJ(cnpj) {
   return true;
 }
 
-// Funções de interface
+// interface
 function mostrarNotificacao(mensagem, tipo = 'sucesso') {
   const notificacao = document.createElement('div');
   notificacao.className = `notificacao ${tipo}`;
@@ -115,7 +111,6 @@ function mostrarNotificacao(mensagem, tipo = 'sucesso') {
   }, 3000);
 }
 
-// Funções de notas fiscais
 function adicionarNotaFiscal() {
   const chaveInput = document.getElementById('chaveNFe');
   const chave = chaveInput.value.trim();
@@ -134,8 +129,7 @@ function adicionarNotaFiscal() {
   const serie = chave.substring(22, 25); // Posição 23 a 25
   const numero = chave.substring(25, 34); // Posição 26 a 34
   
-  // Aceita qualquer CNPJ com 44 dígitos - removida validação de correspondência
-  // Agora aceita qualquer nota fiscal com chave válida de 44 dígitos
+  // Aceita qualquer CNPJ com 44 dígitos 
   notasFiscais.push({ chave, serie, numero });
   chaveInput.value = '';
   atualizarListaNotas();
@@ -175,21 +169,19 @@ function atualizarListaNotas() {
   }
 }
 
-// Variáveis para o contador
 let tempoRestante = 15;
 let contadorInterval;
 
 function iniciarContador() {
-  // Limpa qualquer contador existente
   if (contadorInterval) {
     clearInterval(contadorInterval);
   }
   
-  // Reseta o tempo
+ 
   tempoRestante = 15;
   document.getElementById('contador').textContent = tempoRestante;
   
-  // Inicia o novo contador
+ 
   contadorInterval = setInterval(() => {
     tempoRestante--;
     document.getElementById('contador').textContent = tempoRestante;
@@ -221,20 +213,20 @@ function validarNotas() {
   document.getElementById('numeroSenha').textContent = numeroSenha;
   proximaTela('resumo');
   
-  // Inicia o contador quando a tela de resumo é carregada
+ 
   iniciarContador();
   
-  // Adiciona eventos para reiniciar o contador
+  
   const telaResumo = document.getElementById('telaResumo');
   telaResumo.addEventListener('click', reiniciarContador);
   telaResumo.addEventListener('touchstart', reiniciarContador);
 }
 
-// Função para abrir o popup de acompanhamento
+//o popup de acompanhamento
 function abrirPopup(tipo) {
   console.log('Abrindo popup:', tipo); // Debug
 
-  // Recupera dados do motorista e atendimento
+ 
   const dados = JSON.parse(sessionStorage.getItem('dadosMotorista') || '{}');
   const nome = (dados.nome || '') + ' ' + (dados.sobrenome || '');
   const empresa = dados.cnpj || '';
@@ -242,20 +234,20 @@ function abrirPopup(tipo) {
   const senha = numeroSenha || '';
   const totalNotas = notasFiscais.length;
   
-  // Valor da descarga (simulado)
+  
   let valorDescarga = 0;
   if (notasFiscais.length > 0 && notasFiscais[0].valor) {
     valorDescarga = notasFiscais.reduce((total, nota) => total + (nota.valor || 0), 0);
   }
-  // Se não houver valor, simula
+  
   if (!valorDescarga) valorDescarga = 50 * totalNotas;
   
-  // Link de acompanhamento (simulado)
+  
   const linkAcompanhamento = 'https://painel.diaadia.com.br/atendimento/' + senha;
 
   console.log('Dados do popup:', { nome, empresa, senha, totalNotas, valorDescarga }); // Debug
 
-  // Preenche popup
+  
   document.getElementById('popupTitulo').textContent = tipo === 'whatsapp' ? 'Acompanhar via WhatsApp' : 'Acompanhar via SMS';
   document.getElementById('popupNome').textContent = nome;
   document.getElementById('popupEmpresa').textContent = empresa;
@@ -273,7 +265,7 @@ function abrirPopup(tipo) {
   console.log('Popup aberto:', popup.style.display); // Debug
 }
 
-// Fecha o popup
+
 function fecharPopup() {
   console.log('Fechando popup'); // Debug
   const popup = document.getElementById('popupAcompanhamento');
@@ -282,7 +274,7 @@ function fecharPopup() {
   console.log('Popup fechado:', popup.style.display); // Debug
 }
 
-// Copia o link do popup
+
 function copiarPopupLink() {
   const linkInput = document.getElementById('popupLink');
   linkInput.select();
@@ -290,7 +282,7 @@ function copiarPopupLink() {
   mostrarNotificacao('Link copiado!', 'sucesso');
 }
 
-// Envia mensagem via WhatsApp ou SMS
+
 function enviarPopupMensagem() {
   // Recupera dados do popup
   const nome = document.getElementById('popupNome').textContent;
@@ -302,7 +294,7 @@ function enviarPopupMensagem() {
   const link = document.getElementById('popupLink').value;
   const tipo = document.getElementById('popupAcompanhamento').getAttribute('data-tipo');
 
-  // Monta mensagem personalizada
+ 
   const mensagem = `Olá, ${nome}!%0AEmpresa: ${empresa}%0ASenha (valor de descarga): ${senha}%0ATotal de notas: ${totalNotas}%0AValor da descarga: ${valorDescarga}%0AAcompanhe por aqui: ${link}`;
 
   if (tipo === 'whatsapp') {
@@ -316,12 +308,12 @@ function enviarPopupMensagem() {
 }
 
 
-// Funções de pagamento
+
 function gerarQRCode() {
-  // Calcula valor total (R$ 50 por nota)
+  
   const valorTotal = notasFiscais.length * 50;
   
-        // Preenche as informações na tela
+        
   document.getElementById('senhaValorDescarga').textContent = numeroSenha;
   document.getElementById('empresaPagamento').textContent = 'Dia a Dia Atacadista S/A';
   document.getElementById('totalNotas').textContent = notasFiscais.length;
@@ -346,7 +338,7 @@ function enviarWhatsApp() {
   window.open(url, '_blank');
 }
 
-// Variáveis para o contador de validação
+
 let tempoValidacao = 15;
 let contadorValidacaoInterval;
 
@@ -356,15 +348,15 @@ function iniciarContadorValidacao() {
     clearInterval(contadorValidacaoInterval);
   }
   
-  // Reseta o tempo
+  
   tempoValidacao = 15;
   document.getElementById('contadorValidacao').textContent = tempoValidacao;
   
-  // Mostra o popup de validação
+  
   const popup = document.getElementById('popupValidacaoPagamento');
   popup.style.display = 'flex';
   
-  // Inicia o novo contador
+  
   contadorValidacaoInterval = setInterval(() => {
     tempoValidacao--;
     document.getElementById('contadorValidacao').textContent = tempoValidacao;
@@ -383,23 +375,23 @@ function confirmarValidacaoPagamento() {
     clearInterval(contadorValidacaoInterval);
   }
   
-  // Esconde o popup
+  
   document.getElementById('popupValidacaoPagamento').style.display = 'none';
   
-  // Mostra o conteúdo da tela de confirmação
+  
   document.querySelector('#telaConfirmacao .conteudo').style.display = 'block';
 }
 
 function cancelarValidacaoPagamento() {
-  // Limpa o contador
+
   if (contadorValidacaoInterval) {
     clearInterval(contadorValidacaoInterval);
   }
   
-  // Volta para a tela de pagamento
+  
   proximaTela('pagamento');
   
-  // Mostra notificação
+ 
   mostrarNotificacao('Pagamento não validado. Tente novamente.', 'erro');
 }
 
@@ -446,7 +438,7 @@ function finalizarAtendimento() {
 function enviarSMS() {
   const telefone = document.getElementById('whatsapp').value;
   const mensagem = `Olá! Sua senha é ${numeroSenha}. Acompanhe seu atendimento no painel.`;
-  // Implementar integração com serviço de SMS
+  
   mostrarNotificacao('SMS enviado com sucesso!');
 }
 
@@ -482,7 +474,6 @@ function emitirRecibo() {
     botao.innerHTML = textoOriginal;
     botao.disabled = false;
     
-    // Simula download do recibo (apenas para protótipo)
     setTimeout(() => {
       mostrarNotificacao('Recibo baixado com sucesso!', 'sucesso');
     }, 500);
@@ -505,11 +496,10 @@ function copiarLink() {
   mostrarNotificacao('Enviado para o WhatsApp!', 'sucesso');
 }
 
-// Inicialização
+
 document.addEventListener('DOMContentLoaded', () => {
   atualizarProgresso();
   
-  // Formatar campo de WhatsApp
   const whatsappInput = document.getElementById('whatsapp');
   if (whatsappInput) {
     whatsappInput.addEventListener('input', (e) => {
@@ -521,10 +511,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Inicializar lista de notas fiscais se existir a tela
+ 
   atualizarListaNotas();
 
-    // Formatar campo de CNPJ
+   
     const cnpjInput = document.getElementById('cnpj');
     if (cnpjInput) {
       cnpjInput.addEventListener('input', (e) => {
