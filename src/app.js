@@ -262,6 +262,9 @@ function iniciarContador() {
 }
 
 function validarConfirmacaoUsuario() {
+  // Atualizar o campo confirmacaoNome com o telefone da tela inicial
+  const telefone = document.getElementById('whatsapp').value || '';
+  document.getElementById('confirmacaoNome').value = telefone;
   proximaTela('pagamento');
 }
 
