@@ -215,8 +215,43 @@
           </div>
         </div>
 
-        <button class="botao" onclick="proximaTela('pagamento')">
+        <button class="botao" onclick="proximaTela('confirmacaoUsuario')">
           Ir para Pagamento
+        </button>
+      </div>
+    </div>
+
+    <!-- Tela de Confirmação do Usuário -->
+    <div id="telaConfirmacaoUsuario" class="tela">
+      <button class="voltar" onclick="voltarTela()">←</button>
+      
+      <div class="welcome-logo" style="text-align: center; margin-bottom: 20px;">
+        <img src="../static/img/Logo_DiaaDia_DD_Prancheta 1 cópia 2-01.png" alt="Logo Dia a Dia Atacadista" style="width: 150px;">
+      </div>
+
+      <div class="header">
+        <div class="titulo">Confirmação de Acesso</div>
+        <div class="subtitulo">Confirme seus dados para prosseguir com o pagamento</div>
+      </div>
+      
+      <div class="conteudo">
+        <div class="form-grupo">
+          <div class="input-grupo">
+            <label class="label">Telefone</label>
+            <input type="text" class="input" id="confirmacaoNome" placeholder="Digite seu Telefone" disabled>
+          </div>
+          
+          <div class="input-grupo">
+            <label class="label">Senha</label>
+            <input type="text" class="input" id="confirmacaoSenha" placeholder="Digite sua senha">
+            <small style="color: #666; font-size: 12px; margin-top: 5px; display: block;">
+              Digite a senha exibida acima para confirmar sua identidade
+            </small>
+          </div>
+        </div>
+        
+        <button class="botao" onclick="validarConfirmacaoUsuario()">
+          Confirmar e Prosseguir
         </button>
       </div>
     </div>

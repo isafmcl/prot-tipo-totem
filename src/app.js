@@ -4,6 +4,7 @@ window.voltarTela = voltarTela;
 window.validarIdentificacao = validarIdentificacao;
 window.adicionarNotaFiscal = adicionarNotaFiscal;
 window.validarNotas = validarNotas;
+window.validarConfirmacaoUsuario = validarConfirmacaoUsuario;
 window.escolherFormaPagamento = escolherFormaPagamento;
 window.copiarLink = copiarLink;
 window.confirmarPagamento = confirmarPagamento;
@@ -21,7 +22,7 @@ let dadosMotorista = {};
 let notasFiscais = [];
 let numeroSenha = 0;
 
-const telas = ['boasVindas', 'identificacao', 'notasFiscais', 'resumo', 'pagamento', 'confirmacao'];
+const telas = ['boasVindas', 'identificacao', 'notasFiscais', 'resumo', 'confirmacaoUsuario', 'pagamento', 'confirmacao'];
 
 // Funções de navegação
 function atualizarProgresso() {
@@ -260,6 +261,22 @@ function iniciarContador() {
   }, 1000);
 }
 
+function validarConfirmacaoUsuario() {
+  const senhaDigitada = document.getElementById('confirmacaoSenha').value;
+  
+  if (!senhaDigitada) {
+    mostrarNotificacao('Digite a senha para continuar.', 'erro');
+    return;
+  }
+  
+  if (senhaDigitada !== numeroSenha.toString()) {
+    mostrarNotificacao('Senha incorreta. Tente novamente.', 'erro');
+    return;
+  }
+  
+  proximaTela('pagamento');
+}
+
 function reiniciarContador() {
   iniciarContador();
 }
@@ -291,6 +308,9 @@ function validarNotas() {
   const telaResumo = document.getElementById('telaResumo');
   telaResumo.addEventListener('click', reiniciarContador);
   telaResumo.addEventListener('touchstart', reiniciarContador);
+  
+  // Preencher o nome completo na tela de confirmação do usuário
+  document.getElementById('confirmacaoNome').value = (dadosMotorista.nome || '') + ' ' + (dadosMotorista.sobrenome || '');
 }
 
 //o popup de acompanhamento
