@@ -262,18 +262,6 @@ function iniciarContador() {
 }
 
 function validarConfirmacaoUsuario() {
-  const senhaDigitada = document.getElementById('confirmacaoSenha').value;
-  
-  if (!senhaDigitada) {
-    mostrarNotificacao('Digite a senha para continuar.', 'erro');
-    return;
-  }
-  
-  if (senhaDigitada !== numeroSenha.toString()) {
-    mostrarNotificacao('Senha incorreta. Tente novamente.', 'erro');
-    return;
-  }
-  
   proximaTela('pagamento');
 }
 
