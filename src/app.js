@@ -265,6 +265,33 @@ function validarConfirmacaoUsuario() {
   // Atualizar o campo confirmacaoNome com o telefone da tela inicial
   const telefone = document.getElementById('whatsapp').value || '';
   document.getElementById('confirmacaoNome').value = telefone;
+
+  // Carregar dados do motorista do sessionStorage
+  const dados = JSON.parse(sessionStorage.getItem('dadosMotorista') || '{}');
+  dadosMotorista = dados;
+
+  // Carregar notas fiscais do sessionStorage, se existirem
+  const notas = JSON.parse(sessionStorage.getItem('notasFiscais') || '[]');
+  notasFiscais = notas;
+
+  // Gerar ou recuperar numeroSenha do sessionStorage
+  let senha = sessionStorage.getItem('numeroSenha');
+  if (!senha) {
+    senha = Math.floor(Math.random() * 9000) + 1000;
+    sessionStorage.setItem('numeroSenha', senha);
+  }
+  numeroSenha = parseInt(senha, 10);
+
+  // Atualizar elementos da tela de pagamento
+  document.getElementById('senhaValorDescarga').textContent = numeroSenha;
+  document.getElementById('empresaPagamento').textContent = 'Dia a Dia Atacadista S/A';
+  document.getElementById('totalNotas').textContent = notasFiscais.length;
+  const valorTotal = notasFiscais.length * 50;
+  document.getElementById('valorPagamento').textContent = 'R$ ' + valorTotal.toFixed(2);
+
+  // Atualizar QR Code
+  gerarQRCode();
+
   proximaTela('pagamento');
 }
 
