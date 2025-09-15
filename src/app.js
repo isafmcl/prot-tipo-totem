@@ -271,7 +271,11 @@ function validarConfirmacaoUsuario() {
   dadosMotorista = dados;
 
   // Carregar notas fiscais do sessionStorage, se existirem
-  const notas = JSON.parse(sessionStorage.getItem('notasFiscais') || '[]');
+  let notas = JSON.parse(sessionStorage.getItem('notasFiscais') || '[]');
+  if (notas.length === 0) {
+    // Se não houver notas, criar uma nota fictícia
+    notas = [{ numero: '000001', serie: '001', cnpjEmpresa: '00000000000000' }];
+  }
   notasFiscais = notas;
 
   // Gerar ou recuperar numeroSenha do sessionStorage
@@ -286,7 +290,7 @@ function validarConfirmacaoUsuario() {
   document.getElementById('senhaValorDescarga').textContent = numeroSenha;
   document.getElementById('empresaPagamento').textContent = 'Dia a Dia Atacadista S/A';
   document.getElementById('totalNotas').textContent = notasFiscais.length;
-  const valorTotal = notasFiscais.length * 50;
+  const valorTotal = 50; // Valor fictício fixo conforme solicitado
   document.getElementById('valorPagamento').textContent = 'R$ ' + valorTotal.toFixed(2);
 
   // Atualizar QR Code
